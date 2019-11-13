@@ -934,8 +934,9 @@ export class Select {
 	 *
 	 * @param {Node} node
 	 * @param {boolean} [inStart=false] set cursor in start of element
+	 * @param {number|null} [offset=null] offset (beginning from start, requires inStart=true)
 	 */
-	setCursorIn(node: Node, inStart: boolean = false) {
+	setCursorIn(node: Node, inStart: boolean = false, offset: number | null = null) {
 		this.errorNode(node);
 
 		if (
@@ -975,6 +976,11 @@ export class Select {
 		}
 
 		range.selectNodeContents(start || last);
+
+		if (null !== offset && false !== inStart) {
+			range.setStart(node, offset);
+		}
+
 		range.collapse(inStart);
 
 		this.selectRange(range);
